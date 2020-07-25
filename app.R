@@ -322,17 +322,17 @@ ui <- fluidPage(theme = "app.css",
   
   # fact 1 analyzation
   fluidRow(
-    # input
+    # input 
     column(12, 
-      radioButtons(inputId = "gender", 
-                   label = h5("Choose a gender"),
-                   choices = list("Female" = "female", 
-                                  "Male" = "male", 
-                                  "Other" = "other"), 
-                        selected = "female"),
-      
-      plotOutput("barchart")
-    ), 
+       radioButtons(inputId = "gender", 
+                    label = h5("Choose a gender"),
+                    choices = list("Female" = "female", 
+                                    "Male" = "male", 
+                                    "Other" = "other"), 
+                    selected = "female"),   
+       # chart output
+       plotOutput("barchart")
+      ),
   )
 )
 
