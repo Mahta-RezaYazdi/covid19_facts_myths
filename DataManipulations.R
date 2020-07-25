@@ -2,9 +2,10 @@
 library(dplyr)
 library(ggplot2)
 library(readxl)
+library(writexl)
 
 # import datasets
-infogears_covid_data <- read_excel("covid-06-27-2020.xlsx")
+infogears_covid_data <- read.csv("covid-07-13-2020.csv")
 
 
 # data cleaning
@@ -110,8 +111,8 @@ infogears_covid_data$leftForShopping <-
 infogears_covid_data$leftForWork <-
   as.factor(infogears_covid_data$leftForWork)
 
-# infogears_covid_data$faceCovering <-
-#   as.factor(infogears_covid_data$faceCovering)
+ infogears_covid_data$faceCovering <-
+   as.factor(infogears_covid_data$faceCovering)
 
 
 # reorder levels
@@ -120,3 +121,6 @@ levels(infogears_covid_data$mentalHealthImpact) <- c("noImpact", "someImpace", "
 levels(infogears_covid_data$virusTest) <- c("notTested", "awaitingResults", "negative", "positive")
 levels(infogears_covid_data$gender) <- c("female", "male", "other", "notShared")
 
+
+#Saving a new dataset with changes above
+write.csv(infogears_covid_data, "Covid_data")

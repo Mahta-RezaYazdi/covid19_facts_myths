@@ -2,6 +2,11 @@ library(shiny)
 library(ggplot2)
 library(dplyr)
 
+
+
+
+Covid_data <- read.csv("Covid_data")
+
 # Define UI for application that draws a histogram
 ui <- fluidPage(theme = "app.css", 
   
@@ -222,7 +227,7 @@ server <- function(input, output) {
   
   # chosen health condition reactive data
   chosen_gender_data <- reactive({
-    infogears_covid_data %>%
+    Covid_data %>%
       filter(gender == input$gender, 
              Person_Wellness == "Some symptoms", 
              virusTest == c("positive", "negative")) 
