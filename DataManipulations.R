@@ -3,6 +3,7 @@ library(dplyr)
 library(ggplot2)
 library(readxl)
 library(writexl)
+library(stringr)
 
 # import datasets
 infogears_covid_data <- read.csv("covid-07-13-2020.csv")
@@ -15,42 +16,24 @@ infogears_covid_data <- read.csv("covid-07-13-2020.csv")
 
 infogears_covid_data <- infogears_covid_data %>%
   mutate(leftHomeTimes = ifelse(leftHomeTimes == "didNotLeft", "didNotLeave", leftHomeTimes),
-         gender = ifelse(gender == "notWantToShare", "notShared", gender),
          Person_Wellness = ifelse(noSymptoms == 1, "No symptoms", "Some symptoms"))
 
+# add Age 
+# "13_17" "18_25" "26_35" "36_45" "46_55" "56_65" "66_75" "75_and_more"
+infogears_covid_data$Age <-
+  str_extract_all(infogears_covid_data$X.age, pattern = "[0-9]{2}.*")
+infogears_covid_data$Age <- as.character(infogears_covid_data$Age)
+infogears_covid_data$Age <- as.factor(infogears_covid_data$Age)
+levels(infogears_covid_data$Age)
 
 # categorical variable
 # no sypmtoms, some symptoms
 infogears_covid_data$Person_Wellness <-
   as.factor(infogears_covid_data$Person_Wellness)
 
-# negative, notTested, positive
-infogears_covid_data$antibodyTest <-
-  as.factor(infogears_covid_data$antibodyTest)
-
-# doNotKnow, haveDirectContact
-infogears_covid_data$exposureLevel <-
-  as.factor(infogears_covid_data$exposureLevel)
-
 # female, male, notShared, notWantToShare, other
 infogears_covid_data$gender <-
   as.factor(infogears_covid_data$gender)
-
-# chronicIssues, noIssues, someIssues
-infogears_covid_data$healthIssues <-
-  as.factor(infogears_covid_data$healthIssues)
-
-# didNotLeave, oneTime, twoTimesOrMore
-infogears_covid_data$leftHomeTimes <-
-  as.factor(infogears_covid_data$leftHomeTimes)
-
-# noImpact, significantImpact, someImpact
-infogears_covid_data$mentalHealthImpact <-
-  as.factor(infogears_covid_data$mentalHealthImpact)
-
-# awaitingResults, negative, notTested, positive
-infogears_covid_data$virusTest <-
-  as.factor(infogears_covid_data$virusTest)
 
 # 0, 1
 infogears_covid_data$bodyAche <-
@@ -116,8 +99,16 @@ infogears_covid_data$leftForWork <-
 levels(infogears_covid_data$healthIssues) <- c("noIssues", "someIssues", "chronicIssues")
 levels(infogears_covid_data$mentalHealthImpact) <- c("noImpact", "someImpace", "significantImpact")
 levels(infogears_covid_data$virusTest) <- c("notTested", "awaitingResults", "negative", "positive")
-levels(infogears_covid_data$gender) <- c("female", "male", "other", "notShared")
 
+#Checking for duplicates
+duplicates_check <- infogears_covid_data %>%
+  select(gender, guid, X.age, ip, userAgent, createdAt)
+
+infogears_covid_data <- infogears_covid_data[!duplicated(duplicates_check),]
+
+#We get that there are some observations that have the same features (gender, guid, X.age, ip, userAgent, createdAt)
+#Which means that they are duplicates and we got rid of them.
 
 #Saving a new dataset with changes above
-write.csv(infogears_covid_data, "Covid_data")
+write.csv(infogears_covid_data, "Covid_data.csv")
+

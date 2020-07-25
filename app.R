@@ -1,9 +1,7 @@
 library(shiny)
+library(ggplot2)
+library(dplyr)
 
-
-
-
-Covid_data <- read.csv("Covid_data")
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(theme = "app.css", 
@@ -131,8 +129,11 @@ ui <- fluidPage(theme = "app.css",
            #title
            h4("Changed or Added Columns"),
            
+           # 0, 1 added features
+           div("Here are the added features with values 0 or 1."),
+           
            # line break
-           br(), 
+           br(), br(), 
            
            tags$table(
                 tags$thead(
@@ -144,8 +145,8 @@ ui <- fluidPage(theme = "app.css",
                 
                 tags$tbody(
                       tags$tr(
-                          tags$td(align = "center", "Person's wellness"),
-                          tags$td(align = "center", "isEmployer")
+                          tags$td(align = "center", strong("Person's wellness")),
+                          tags$td(align = "center", strong("isEmployer"))
                        ),
                       tags$tr(
                           tags$td(align = "center", "0 / 1"),
@@ -155,17 +156,51 @@ ui <- fluidPage(theme = "app.css",
               
                 tags$tbody(
                   tags$tr(
-                    tags$td(align = "center", "Left not for work"),
-                    tags$td(align = "center", "very high exposure")
+                    tags$td(align = "center", strong("Left not for work")),
+                    tags$td(align = "center", strong("very high exposure")),
                   ),
                   tags$tr(
                     tags$td(align = "center", "0 / 1"),
-                    tags$td(align = "center", "0 / 1")
+                    tags$td(align = "center", "0 / 1"),
                   )
-                )
+                ), 
+
            ),
            
+           #line break
+           br(), br(),
            
+           # Age
+           div("Age column is added to the data frame by extracting the ages from X.age
+               feature."),
+           
+           # line break
+           br(), 
+           
+           # Age table
+           tags$table(
+             tags$thead(
+               tags$tr(
+               tags$th(colspan = 2,
+                       width = 500)
+               )
+             ),
+             tags$tbody(
+               tags$tr(
+                 tags$td(align = "center", strong("Age:")),
+                 tags$td("13_17, 
+                         18_25, 
+                         26_35, 
+                         36_45, 
+                         46_55,  
+                         56_65,  
+                         66_75,  
+                         75_and_more")
+               ),
+            ),
+           ),
+           
+           # line break
            br(), 
            
            # line separator
