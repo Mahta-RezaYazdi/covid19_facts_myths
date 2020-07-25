@@ -4,123 +4,123 @@ library(ggplot2)
 library(readxl)
 library(shiny)
 
-
 # import datasets
-# infogears_covid_data <- read_excel("covid-06-27-2020.xlsx")
-# 
-# 
-# # data cleaning
-# # replace all "didNotLefts" to "didNotLeave" in lefHomeTimes
-# infogears_covid_data <- infogears_covid_data %>%
-#   mutate(leftHomeTimes = ifelse(leftHomeTimes == "didNotLeft", "didNotLeave", leftHomeTimes))
-# 
-# # replace all "notWantToShare" to "notShared"
-# infogears_covid_data <- infogears_covid_data %>%
-#   mutate(gender = ifelse(gender == "notWantToShare", "notShared", gender))
-# 
-# # add Person_Wellness depending on having symptoms
-# infogears_covid_data <- infogears_covid_data %>%
-#   mutate(Person_Wellness = ifelse(noSymptoms == 1, "No symptoms", "Some symptoms"))
-# 
-# 
-# # categorical variable
-# # no sypmtoms, some symptoms
-# infogears_covid_data$Person_Wellness <-
-#   as.factor(infogears_covid_data$Person_Wellness)
-# 
-# # negative, notTested, positive
-# infogears_covid_data$antibodyTest <-
-#   as.factor(infogears_covid_data$antibodyTest)
-# 
-# # doNotKnow, haveDirectContact
-# infogears_covid_data$exposureLevel <-
-#   as.factor(infogears_covid_data$exposureLevel)
-# 
-# # female, male, notShared, notWantToShare, other
-# infogears_covid_data$gender <-
-#   as.factor(infogears_covid_data$gender)
-# 
-# # chronicIssues, noIssues, someIssues
-# infogears_covid_data$healthIssues <-
-#   as.factor(infogears_covid_data$healthIssues)
-# 
-# # didNotLeave, oneTime, twoTimesOrMore
-# infogears_covid_data$leftHomeTimes <-
-#   as.factor(infogears_covid_data$leftHomeTimes)
-# 
-# # noImpact, significantImpact, someImpact
-# infogears_covid_data$mentalHealthImpact <-
-#   as.factor(infogears_covid_data$mentalHealthImpact)
-# 
-# # awaitingResults, negative, notTested, positive
-# infogears_covid_data$virusTest <-
-#   as.factor(infogears_covid_data$virusTest)
-# 
-# # 0, 1
-# infogears_covid_data$bodyAche <-
-#   as.factor(infogears_covid_data$bodyAche)
-# 
-# # 0, 1
-# infogears_covid_data$diarrhea <-
-#   as.factor(infogears_covid_data$diarrhea)
-# 
-# # 0, 1
-# infogears_covid_data$difficultyBreathing <-
-#   as.factor(infogears_covid_data$difficultyBreathing)
-# 
-# # 0, 1
-# infogears_covid_data$disorientation <-
-#   as.factor(infogears_covid_data$disorientation)
-# 
-# # 0, 1
-# infogears_covid_data$fatigue <-
-#   as.factor(infogears_covid_data$fatigue)
-# 
-# # 0, 1
-# infogears_covid_data$headAche <-
-#   as.factor(infogears_covid_data$headAche)
-# 
-# # 0, 1
-# infogears_covid_data$irritatedEyes <-
-#   as.factor(infogears_covid_data$irritatedEyes)
-# 
-# # 0, 1
-# infogears_covid_data$lossOfSmell <-
-#   as.factor(infogears_covid_data$lossOfSmell)
-# 
-# # 0, 1
-# infogears_covid_data$persistentCough <-
-#   as.factor(infogears_covid_data$persistentCough)
-# 
-# # 0, 1
-# infogears_covid_data$soreThroat <-
-#   as.factor(infogears_covid_data$soreThroat)
-# 
-# # 0, 1
-# infogears_covid_data$temperature <-
-#   as.factor(infogears_covid_data$temperature)
-# 
-# # 0, 1
-# infogears_covid_data$leftForExercise <-
-#   as.factor(infogears_covid_data$leftForExercise)
-# 
-# # 0, 1
-# infogears_covid_data$leftForShopping <-
-#   as.factor(infogears_covid_data$leftForShopping)
-# 
-# # 0, 1
-# infogears_covid_data$leftForWork <-
-#   as.factor(infogears_covid_data$leftForWork)
-# 
-# # infogears_covid_data$faceCovering <-
-# #   as.factor(infogears_covid_data$faceCovering)
-# 
-# 
-# # reorder levels
-# levels(infogears_covid_data$healthIssues) <- c("noIssues", "someIssues", "chronicIssues")
-# levels(infogears_covid_data$mentalHealthImpact) <- c("noImpact", "someImpace", "significantImpact")
-# levels(infogears_covid_data$virusTest) <- c("notTested", "awaitingResults", "negative", "positive")
-# levels(infogears_covid_data$gender) <- c("female", "male", "other", "notShared")
+infogears_covid_data <- read_excel("covid-06-27-2020.xlsx")
+
+
+# data cleaning
+# replace all "didNotLefts" to "didNotLeave" in lefHomeTimes
+infogears_covid_data <- infogears_covid_data %>%
+  mutate(leftHomeTimes = ifelse(leftHomeTimes == "didNotLeft", "didNotLeave", leftHomeTimes))
+
+# replace all "notWantToShare" to "notShared"
+infogears_covid_data <- infogears_covid_data %>%
+  mutate(gender = ifelse(gender == "notWantToShare", "notShared", gender))
+
+# add Person_Wellness depending on having symptoms
+infogears_covid_data <- infogears_covid_data %>%
+  mutate(Person_Wellness = ifelse(noSymptoms == 1, "No symptoms", "Some symptoms"))
+
+
+# categorical variable
+# no sypmtoms, some symptoms
+infogears_covid_data$Person_Wellness <-
+  as.factor(infogears_covid_data$Person_Wellness)
+
+# negative, notTested, positive
+infogears_covid_data$antibodyTest <-
+  as.factor(infogears_covid_data$antibodyTest)
+
+# doNotKnow, haveDirectContact
+infogears_covid_data$exposureLevel <-
+  as.factor(infogears_covid_data$exposureLevel)
+
+# female, male, notShared, notWantToShare, other
+infogears_covid_data$gender <-
+  as.factor(infogears_covid_data$gender)
+
+# chronicIssues, noIssues, someIssues
+infogears_covid_data$healthIssues <-
+  as.factor(infogears_covid_data$healthIssues)
+
+# didNotLeave, oneTime, twoTimesOrMore
+infogears_covid_data$leftHomeTimes <-
+  as.factor(infogears_covid_data$leftHomeTimes)
+
+# noImpact, significantImpact, someImpact
+infogears_covid_data$mentalHealthImpact <-
+  as.factor(infogears_covid_data$mentalHealthImpact)
+
+# awaitingResults, negative, notTested, positive
+infogears_covid_data$virusTest <-
+  as.factor(infogears_covid_data$virusTest)
+
+# 0, 1
+infogears_covid_data$bodyAche <-
+  as.factor(infogears_covid_data$bodyAche)
+
+# 0, 1
+infogears_covid_data$diarrhea <-
+  as.factor(infogears_covid_data$diarrhea)
+
+# 0, 1
+infogears_covid_data$difficultyBreathing <-
+  as.factor(infogears_covid_data$difficultyBreathing)
+
+# 0, 1
+infogears_covid_data$disorientation <-
+  as.factor(infogears_covid_data$disorientation)
+
+# 0, 1
+infogears_covid_data$fatigue <-
+  as.factor(infogears_covid_data$fatigue)
+
+# 0, 1
+infogears_covid_data$headAche <-
+  as.factor(infogears_covid_data$headAche)
+
+# 0, 1
+infogears_covid_data$irritatedEyes <-
+  as.factor(infogears_covid_data$irritatedEyes)
+
+# 0, 1
+infogears_covid_data$lossOfSmell <-
+  as.factor(infogears_covid_data$lossOfSmell)
+
+# 0, 1
+infogears_covid_data$persistentCough <-
+  as.factor(infogears_covid_data$persistentCough)
+
+# 0, 1
+infogears_covid_data$soreThroat <-
+  as.factor(infogears_covid_data$soreThroat)
+
+# 0, 1
+infogears_covid_data$temperature <-
+  as.factor(infogears_covid_data$temperature)
+
+# 0, 1
+infogears_covid_data$leftForExercise <-
+  as.factor(infogears_covid_data$leftForExercise)
+
+# 0, 1
+infogears_covid_data$leftForShopping <-
+  as.factor(infogears_covid_data$leftForShopping)
+
+# 0, 1
+infogears_covid_data$leftForWork <-
+  as.factor(infogears_covid_data$leftForWork)
+
+# infogears_covid_data$faceCovering <-
+#   as.factor(infogears_covid_data$faceCovering)
+
+
+# reorder levels
+levels(infogears_covid_data$healthIssues) <- c("noIssues", "someIssues", "chronicIssues")
+levels(infogears_covid_data$mentalHealthImpact) <- c("noImpact", "someImpace", "significantImpact")
+levels(infogears_covid_data$virusTest) <- c("notTested", "awaitingResults", "negative", "positive")
+levels(infogears_covid_data$gender) <- c("female", "male", "other", "notShared")
+
 
 
 # Define UI for application that draws a histogram
@@ -146,26 +146,50 @@ ui <- fluidPage(theme = "app.css",
            h4("Problem statement"),
            
            # body
-           div("Since COVID19 is a new virus, the world is faced with 
-                uncertainty and the unknown. In order to protect ourselves 
-                and others around us, we need to know COVID19 facts and 
-                take appropriate precautions. Our aim is to raise awareness 
-                about COVID19, by analysing it’s most common myths and facts 
-                based on trustworthy datasets, to help stop the spread of 
-                rumours and the disease as the situation with COVID19 continues. "),
+           div("As the world continues to fight the spread of COVID19 and we gradually 
+               reopen our communities, monitoring public health is essential for 
+               everyone's safety! Since COVID19 is a new virus, the world currently 
+               is faced with uncertainty and the unknown. In order to protect ourselves 
+               and others around us, we need to know COVID19 facts and take appropriate 
+               precautions. Our aim is to first, raise awareness about COVID19, by analysing 
+               it’s most common myths and facts based on trustworthy datasets, second, 
+               analise how seriously people take the COVID19 rules and facts through easy to 
+               understand visuals, to help stop the spread of rumours and the disease as the 
+               situation with COVID19 continues."),
+           
+           # line break
+           br(), 
+           
+           
+           # title
+           h4("About InfoGears"),
+           
+           # about infogears
+           div(
+               a(href="https://infogears.org/", "Infogears dataset"), 
+               "is maily used to do the analysis. Infogears is a 
+               crowdsourced COVID-19 symptoms data site for your local community.
+               Infogears data platform was created to rely on crowdsourcing and 
+               self-reporting. Infogear's goal is to to help local communities 
+               visualize the prevalence of coronavirus symptoms and other aspects of life 
+               impacted by the crisis. Infogears believes that since symptoms come before 
+               positive case identification, therefore are predictive. It's outcome is 
+               that predicted coming up cases increase or decrease in a local area. 
+               This FREE project is made possible by the NetGenix Inc."), 
+           
            
            # line separator
            hr(),
     )
   ), 
   
-  
+
   # data description
-  fluidPage(
+  fluidRow(
     column(12, 
            
            # tilte
-           h4("Data Description"),
+           h4("InfoGears Dataset Description"),
            
            # body
            div(
@@ -203,32 +227,140 @@ ui <- fluidPage(theme = "app.css",
              "Virus test  -  awaitingResults, negative, notTested, positi",
              br(),
              "Zip code  -  zip code",
-             br(), 
+             br(),br(), 
              "Body ache, Diarrhea, Difficulty breathing, Disorientation, Fatigue, 
               Headache, Irritated eyes, Persistent cough, Sore throat, Temperature, 
               Loss of smell  and ‘no symptoms’ indicate having  COVID19 symptoms and their 
               values are just 0 or 1 (true or false). Left for exercise , Left for others, 
               Left for shopping, Left for work values are also only 0 and 1.These columns 
               are of Factor type.", 
-              br(),
+              br(),br(), 
+             "Data is categorized by individual ZIP codes. 
+              In this dataset columns age, guid, ip and zipCode are 
+              of Character type, the rest are of numeric type.", 
               br(), 
-             "In this dataset columns age, guid, ip and zipCode are 
-              of Character type, the rest are of numeric type.
-              Overall there are 16,768 observations in the dataset."),
+              "Overall there are 16,768 observations in the dataset."),
            
+           
+           # line break
+           br(), 
+           
+      
+           #title
+           h4("Changed or Added Columns"),
+           
+           # line break
+           br(), 
+           
+           tags$table(
+                tags$thead(
+                     tags$tr(
+                        tags$th(colspan = 2,
+                                width = 500)
+                    )
+                ), 
+                
+                tags$tbody(
+                      tags$tr(
+                          tags$td(align = "center", "Person's wellness"),
+                          tags$td(align = "center", "isEmployer")
+                       ),
+                      tags$tr(
+                          tags$td(align = "center", "0 / 1"),
+                          tags$td(align = "center", "0 / 1")
+                      )
+                ), 
+              
+                tags$tbody(
+                  tags$tr(
+                    tags$td(align = "center", "Left not for work"),
+                    tags$td(align = "center", "very high exposure")
+                  ),
+                  tags$tr(
+                    tags$td(align = "center", "0 / 1"),
+                    tags$td(align = "center", "0 / 1")
+                  )
+                )
+           ),
+           
+           
+           br(), 
            
            # line separator
            hr(),
-      
     )
   ),
   
-  # out put
-  mainPanel()
+  # fact 1 
+  fluidRow(
+      column(12, 
+      # Does physical health condition affect the level of vulnerability to COVID19
+      
+      # title
+      h4("Does physical health condition affect the level of vulnerability to COVID19?"), 
+      
+      # fact 1
+      div("According to", 
+          a(href="https://www.health.gov.au/news/health-alerts/novel-coronavirus-2019-ncov-
+            health-alert/advice-for-people-at-risk-of-coronavirus-covid-19/coronavirus-covid-
+            19-advice-for-people-with-chronic-health-conditions", 
+            "Australian Government, Department of Health"), 
+            ", Anyone could develop serious or severe illness from COVID-19, but those with 
+            chronic health conditions or weakened immune systems are at greater risk."), 
+      
+      # line break
+      br(), 
+      
+      # guidance
+      div("You can check the truthness of this statement by choosing three different
+          physical health conditions and chek the resulting barcharts."), 
+      
+      # line break
+      br(), 
+    )
+  ), 
+  
+  # fact 1 analyzation
+  fluidRow(
+    # input
+    column(12, 
+      radioButtons(inputId = "gender", 
+                   label = h5("Choose a gender"),
+                   choices = list("Female" = "female", 
+                                  "Male" = "male", 
+                                  "Other" = "other"), 
+                        selected = "female"),
+      
+      plotOutput("barchart")
+    ), 
+  )
 )
 
+
+
 # Define server logic required to draw a histogram
-server <- function(input, output) {}
+server <- function(input, output) {
+  
+  # chosen health condition reactive data
+  chosen_gender_data <- reactive({
+    infogears_covid_data %>%
+      filter(gender == input$gender, 
+             Person_Wellness == "Some symptoms", 
+             virusTest == c("positive", "negative")) 
+  })
+  
+  # fact 1 output
+  output$barchart <- renderPlot({
+    ggplot(chosen_gender_data(), aes(virusTest, fill = virusTest)) + 
+      facet_wrap(~healthIssues) + 
+      labs(title = "Testing Results Based on Physical Health Condition") + 
+      geom_bar( 
+        color = "white", 
+        size = 0.5, 
+        width = 0.9, 
+        alpha = 0.5)
+  })
+}
 
 # Run the application 
 shinyApp(ui = ui, server = server)
