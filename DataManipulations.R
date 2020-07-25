@@ -10,16 +10,13 @@ infogears_covid_data <- read.csv("covid-07-13-2020.csv")
 
 # data cleaning
 # replace all "didNotLefts" to "didNotLeave" in lefHomeTimes
-infogears_covid_data <- infogears_covid_data %>%
-  mutate(leftHomeTimes = ifelse(leftHomeTimes == "didNotLeft", "didNotLeave", leftHomeTimes))
-
 # replace all "notWantToShare" to "notShared"
-infogears_covid_data <- infogears_covid_data %>%
-  mutate(gender = ifelse(gender == "notWantToShare", "notShared", gender))
-
 # add Person_Wellness depending on having symptoms
+
 infogears_covid_data <- infogears_covid_data %>%
-  mutate(Person_Wellness = ifelse(noSymptoms == 1, "No symptoms", "Some symptoms"))
+  mutate(leftHomeTimes = ifelse(leftHomeTimes == "didNotLeft", "didNotLeave", leftHomeTimes),
+         gender = ifelse(gender == "notWantToShare", "notShared", gender),
+         Person_Wellness = ifelse(noSymptoms == 1, "No symptoms", "Some symptoms"))
 
 
 # categorical variable
