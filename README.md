@@ -1,3 +1,10 @@
+## Project authors: 
+    *Ani Jeyranyan 
+    *Julieta Aghakaryan
+    *Liana Poghosyan
+    *Mahta Reza Yazdi
+    *Stepan Nshanyan
+
 ## Covid-19 Facts and Myths
 The project is about the dataset collected by [Infogears](https://infogears.org/). The dataset contains information about the states of the USA.
 The platform aims to provide information through easy to understand visuals. Maps and charts are leveraged to show all local community health data.
