@@ -1,4 +1,4 @@
-![alt text](https://github.com/Mahta-RezaYazdi/covid19_facts_myths/blob/master/www/logo.png "){:height="50%" width="50%"}
+![test image size](https://github.com/Mahta-RezaYazdi/covid19_facts_myths/blob/master/www/logo.png){:height="50%" width="50%"}
 ## Project authors are: 
 * Ani Jeyranyan 
 * Julieta Aghakaryan
