@@ -400,45 +400,76 @@ new tests smoothed, new tests smoothed(per thousand) by the time period of Infog
     tabPanel("COVID19 USA Data Visualisation", 
              
              # Fact 1 description
+             # Fact 1 description
              fluidRow(
-               div(
-               column(12, 
-                  # Does physical health condition affect the level of vulnerability to COVID19
-                      
-                  # title
-                  h4("Does physical health condition affect the level of vulnerability to COVID19?"), 
-                      
-                  # fact 1
-                  p("According to", 
-                     a(href="https://www.health.gov.au/news/health-alerts/novel-coronavirus-2019-ncov-
+               div(style = "margin: 10px",
+                   column(12,
+                          # Does physical health condition affect the level of vulnerability to COVID19
+                          
+                          # title
+                          h4(style = "color: #483D8B;", "Does physical health condition affect the level of vulnerability to COVID19?"),
+                          
+                          # fact 1
+                          p("According to",
+                            a(href="https://www.health.gov.au/news/health-alerts/novel-coronavirus-2019-ncov-
                      health-alert/advice-for-people-at-risk-of-coronavirus-covid-19/coronavirus-covid-
-                     19-advice-for-people-with-chronic-health-conditions", 
-                     "Australian Government, Department of Health"), 
-                    
-                     ", Anyone could develop serious or severe illness from COVID-19, but those with 
-                     chronic health conditions or weakened immune systems are at greater risk."), 
-                      
-                   # line break
-                   br(), 
-                      
-                   # guidance
-                   p("You can check the truthness of this statement by choosing three different
-                   physical health conditions and chek the resulting barcharts."), 
-                      
-                   # line break
-                   br(), 
-                  ) # end of column
+                     19-advice-for-people-with-chronic-health-conditions",
+                              "Australian Government, Department of Health"),
+                            
+                            ", Anyone could develop serious or severe illness from COVID-19, but those with
+                     chronic health conditions or weakened immune systems are at greater risk."),
+                          
+                          # line break
+                          br(),
+                          
+                          # guidance
+                          p("You can check the truthness of this statement by choosing three different
+                   physical health conditions and gender to chek the resulting barcharts."),
+                          
+                          # line break
+                          br(),
+                   ) # end of column
                ) # end of div
              ), # end of fluid row fact 1 description
-    
-            radioButtons(inputId = "gender", 
-                         label = h5("Choose a gender"),
-                         choices = list("Female" = "female", 
-                                         "Male" = "male", 
-                                          "Other" = "other"), 
-                                    selected = "female"),  
-              
-           plotOutput("barchart"),
+             
+             # Fact 1 input
+             fluidRow(
+               column(6,
+                      # choose gender
+                      radioButtons(inputId = "gender",
+                                   label = h5("Choose a gender"),
+                                   choices = list("Female" = "female",
+                                                  "Male" = "male"),
+                                   selected = "female"),
+               ), # end of column
+               column(6,
+                      # choose physical health condition
+                      radioButtons(inputId = "physical_health_condition",
+                                   label = h5("Choose a physical health condition"),
+                                   choices = list("No issues" = "noIssues",
+                                                  "Some issues" = "someIssues",
+                                                  "Chronic issues" = "chronicIssues"),
+                                   selecte = "noIssues"),        
+               ),
+             ),
+             
+             mainPanel(plotOutput("barchart")),
+             
+             # line break
+             br(),
+             
+             # result of the analysation
+             fluidRow(
+               div(style = "margin: 10px",
+                   column(12,
+                          p("As you can see, anyone at any age might catch COVID19, however people who
+                have some or chronic health issues are at higher risk."),
+                          
+                          # line
+                          hr(),
+                   ) # end of column
+               ) # end of div
+             ), # end of fluid row result of the analysation
            
            #Region_Cities visualization
            fluidRow(
@@ -535,6 +566,7 @@ new tests smoothed, new tests smoothed(per thousand) by the time period of Infog
            
            plotOutput("geo_pie"),
            
+           
            #########################
            fluidRow(column(12, 
                            div(
@@ -561,7 +593,6 @@ new tests smoothed, new tests smoothed(per thousand) by the time period of Infog
                              br(), 
                              
                            ) 
-           )
            ),
            fluidRow(
              column(6 ,selectInput(inputId="timing",
@@ -574,75 +605,62 @@ new tests smoothed, new tests smoothed(per thousand) by the time period of Infog
            plotOutput("scatterplot"),
            
            hr(),
+           ),
            fluidRow(
-             div(
-               column(12, 
-                      div(
-                        #title
-                        h3("Did the coronavirus affect on how often people started leaving their homes?"), 
-                        p("According to", 
-                          a(href="https://www.nidirect.gov.uk/", 
-                            "nidirect government service"), 
-                          ", people during COVID19 are mostly staying at home, and isolating themselves. Nidirect claims, that number of household members is not affecting the house leaving rate."), 
-                        br(), 
-                        p("You can check the truthness of this statement by choosing gender and chek the resulting scatterplot"), 
+             div(style = "margin: 10px",
+                 column(12,
+                        # Does physical health condition affect the level of vulnerability to COVID19
+                        
+                        # title
+                        h4(style = "color: #483D8B;",
+                           "Understand the potential risks of going out"),
+                        
+                        # fact 1
+                        p("According to",
+                          a(href="https://www.euro.who.int/en/health-topics/health-emergencies/coronavirus-covid-19/statements/statement-older-people-are-at-highest-risk-from-covid-19,-but-all-must-act-to-prevent-community-spread",
+                            "World Health Organization"),
+                          
+                          ",the rate of leaving houses and getting sick with COVID19 is positively related.It is very important that people with symptoms that may be due to COVID-19 and their household members stay at home. Staying at home will help prevent the spread of the virus to family, friends, the wider community, and particularly those who are clinically extremely vulnerable. "),
+                        
+                        # line break
                         br(),
-                        p("X-axis shows the number of household members and Y-axis shows how many times they left their homes during COVID19."), 
-                        br(), 
-                      ) 
-               )
-             ) 
+                 )
+             )
            ),
            
            
-           selectInput(inputId ="gender1", label="Choose a gender",
-                       choices = list("Female" = "female", 
-                                      "Male" = "male", 
-                                      "Other" = "other"), 
-                       selected = "female"),
+           
+           selectInput(inputId ="left",
+                       label="Choose the number of times the peron left home",
+                       choices = list("Did not leave" = "didNotLeave",
+                                      "Once" = "oneTime",
+                                      "Twice or more" = "twoTimesOrMore"),
+                       selected = "didNotLeave"),
+           
+           plotOutput("barchart1"),
            
            
-           
-           
-           plotOutput("scatterplot1"),
-           
-           #####################
+           # result of the analysation
            fluidRow(
-             div(
-               column(12, 
-                      # Does physical health condition affect the level of vulnerability to COVID19
-                      
-                      # title
-                      h4("Does physical health condition affect the level of vulnerability to COVID19 if person leaves home?"), 
-                      
-                      # fact 1
-                      p("According to", 
-                        a(href="https://www.euro.who.int/en/health-topics/health-emergencies/coronavirus-covid-19/statements/statement-older-people-are-at-highest-risk-from-covid-19,-but-all-must-act-to-prevent-community-spread", 
-                          "World Health Organization"), 
+             div(style = "margin: 10px",
+                 column(12,
+                        p("
+                        According to the above bar charts, unfortunately, some people who either are  
+                        positive COVID19 patients or have some COVID19 symports do leave their homes  
+                        during the day, which represents there is risk of catching COVID19 outdoors.  
+                        However, it can also be interpreted that the higher percent of people who are  
+                        plosive COVID19 patients do not leave their homes, which has a huge effect on  
+                        slowing down the pace of COVID19 spread in the community
+                        If you decide to engage in public activities, continue to
+                        protect yourself by",
+                          a(href="https://www.cdc.gov/coronavirus/2019-ncov/prevent-getting-sick/prevention.html",
+                            "practicing everyday preventive actions.")),
                         
-                        ",the rate of leaving houses and getting sick with COVID19 is positively related.It is very important that people with symptoms that may be due to COVID-19 and their household members stay at home. Staying at home will help prevent the spread of the virus to family, friends, the wider community, and particularly those who are clinically extremely vulnerable. "), 
-                      
-                      br(), 
-                      
-                      
-                      p("You can check the truthness of this statement by choosing how many time person leaves house and chek the resulting barcharts."), 
-                      
-                      
-                      br(), 
-                      
-                      br(),
-                      
-                      p(" Graph shows the total number of each issue within the infogears dataset depending on how many times person leaves house."),
-                      
-                      br(),
-               ) 
-             ) 
-           ), 
-           selectInput(inputId ="left", label="Choose how many times a peron leaves home",
-                       choices = unique(infogears_covid_data$leftHomeTimes),
-                       selected = "didNotLeft"),
-           
-           plotOutput("barchart1")
+                        # line
+                        hr(),
+                 ) # end of column
+             ) # end of div
+           ), # end of fluid row result of the analysation
              
     ), 
     tabPanel("COVID-19 Global Data Visualization",
@@ -779,14 +797,26 @@ server <- function(input, output) {
     
   }, width = 850)
   
+  #chosen health condition reactive data
+  covid_updated <- reactive({
+    infogears_covid_data %>%
+      filter(leftHomeTimes == input$left,
+             virusTest == c("positive", "negative"))
+  })
   
   output$barchart1 <- renderPlot({
-    covid_updated <- infogears_covid_data[str_detect(infogears_covid_data$leftHomeTimes, pattern=input$left),]
-    covid_updated %>%
-      group_by(healthIssues) %>%
-      summarise(Count=n()) %>%
-      ggplot(aes(x=healthIssues, y=Count, fill=healthIssues)) + geom_bar(stat="identity" )+
-      labs(title="Number of people with issues", x="Issues", y="Total number of issues", fill="Health issues")
+    
+    covid_updated() %>%
+      ggplot(aes(healthIssues, fill=virusTest)) +
+      geom_bar(color = "white", size = 0.5, width = 0.6, alpha = 0.5) +
+      facet_wrap(~factor(Person_Wellness)) +
+      labs(title="Number of People Left Home Times and Their Health Condition",
+           x="Health Condition",
+           y="Count") +
+      scale_fill_manual(values = c("green", "red"),
+                        name = "Virus Test Result",
+                        label = c("Negative", "Positive")) +
+      scale_x_discrete(labels=c("Chronic Issues", "No Issues", "Some Issues"))
     
   }, width = 850)
   
@@ -804,22 +834,29 @@ server <- function(input, output) {
   #chosen health condition reactive data
   chosen_gender_data <- reactive({
     infogears_covid_data %>%
-      filter(gender == input$gender, 
-             Person_Wellness == "Some symptoms", 
-             virusTest == c("positive", "negative")) 
+      filter(gender == input$gender,
+             healthIssues == input$physical_health_condition,
+             Person_Wellness == "Some symptoms",
+             virusTest == c("positive", "negative"))
   })
   
   # fact 1 output
   output$barchart <- renderPlot({
-    ggplot(chosen_gender_data(), aes(virusTest, fill = virusTest)) + 
-      facet_wrap(~healthIssues) + 
-      labs(title = "Testing Results Based on Physical Health Condition") + 
-      geom_bar( 
-        color = "white", 
-        size = 0.5, 
-        width = 0.9, 
+    ggplot(chosen_gender_data(), aes(virusTest, fill = virusTest)) +
+      facet_wrap(~ factor(Age)) +
+      scale_fill_manual(values = c("green", "red"),
+                        name = "COVD19 test result",
+                        label = c("Negative", "Positive")) +
+      labs(title = "Testing Results Based on Physical Health Condition and Age",
+           x = "Virus test result",
+           y = "Count") +
+      geom_bar(
+        color = "white",
+        size = 0.5,
+        width = 0.9,
         alpha = 0.5)
   }, width = 850)
+  
   
   output$geo_lefthome <- renderPlot({
     
@@ -911,7 +948,7 @@ server <- function(input, output) {
     ggplot(covid_first, aes(x=total_deaths, y = total_cases)) + geom_point(color="red")+ 
       scale_x_continuous(labels = scales::comma) + coord_cartesian(ylim=c(0,500), xlim=c(0, 500)) +coord_flip() +
       scale_y_continuous(labels = scales::comma)+ 
-      labs(title="Relation of total deaths and total cases within a conuntry", x="Total deaths", y="Total cases")
+      labs(title="Relation of total deaths and total cases within a country", x="Total deaths", y="Total cases")
   }, width = 850)
   
   output$scatterplot4 <- renderPlot({
@@ -924,7 +961,7 @@ server <- function(input, output) {
     ggplot(covid_first, aes(x=total_deaths, y = cardiovasc_death_rate, fill="total_deaths")) + geom_point()+ geom_smooth(method="lm", se=F)+
       scale_x_continuous(labels = scales::comma)  +
       scale_y_continuous(labels = scales::comma)+ 
-      labs(title="Relation of total deaths and cardiovascular death rate within a country", x="Total deaths", y="Cardiovasc death rate", fill="")
+      labs(title="Relation of total deaths and cardiovascular death rate within a country", x="Total deaths", y="Cardiovascular death rate", fill="")
     
   }, width = 850)
   
@@ -945,7 +982,7 @@ server <- function(input, output) {
       ggplot(aes(x=Count, y = median_age, fill="median_age")) + geom_point(stat="identity")+geom_smooth(method="lm", se=F)+
       scale_x_continuous(labels = scales::comma)  +
       scale_y_continuous(labels = scales::comma)+  coord_cartesian(xlim=c(0,100000), ylim=c(15, 50)) +
-      labs(title="Relation of total deaths and median age within a country", x="Total deaths", y="Cardiovasc death rate", fill="")
+      labs(title="Relation of total deaths and median age within a continent", x="Total deaths", y="Cardiovascular death rate", fill="")
     
   }, width = 850)
   output$scatterplot6 <- renderPlot({
@@ -964,7 +1001,7 @@ server <- function(input, output) {
       ggplot(aes(x=Count, y = median_age, fill="median_age")) + geom_point(stat="identity")+geom_smooth(method="lm", se=F)+
       scale_x_continuous(labels = scales::comma)  +
       scale_y_continuous(labels = scales::comma)+  coord_cartesian(xlim=c(0,100000), ylim=c(15, 50)) +
-      labs(title="Relation of total deaths and median age within a country", x="Total deaths", y="Cardiovasc death rate", fill="")
+      labs(title="Relation of total deaths and median age within a country", x="Total deaths", y="Cardiovascular death rate", fill="")
     
   }, width = 850)
 }
