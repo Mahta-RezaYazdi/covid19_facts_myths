@@ -78,9 +78,11 @@ ui <- fluidPage(theme = "app.css",
                        # body
                        p(
                          h5("USA analysis"),
+                         "-What are test results according to physical condition by gender",
+                         br(),
                          "-What is the frequency of face covering when leaving home by gender.",
                          br(),
-                         "-What is the percentage of Mental health impact by region and gender",
+                         "-What is the percentage of Mental health impact by region and gender and times of leaving home",
                          br(),
                          "-How number of total cases, new cases, total deaths, new deaths, total cases(per million),
 new cases(per million), total deaths(per million), new deaths(per million), 
@@ -556,6 +558,7 @@ new tests smoothed, new tests smoothed(per thousand) by the time period of Infog
                              br(), 
                              
                            ) 
+                           
            )
            ),
            fluidRow(
@@ -572,10 +575,9 @@ new tests smoothed, new tests smoothed(per thousand) by the time period of Infog
            fluidRow(
              div(
                column(12, 
-                      
-                      h4("Did the coronavirus affect on how often people started leaving their homes?"), 
-                      
-                      
+                      div(
+                      #title
+                      h3("Did the coronavirus affect on how often people started leaving their homes?"), 
                       p("According to", 
                         a(href="https://www.nidirect.gov.uk/", 
                           "nidirect government service"), 
@@ -583,7 +585,6 @@ new tests smoothed, new tests smoothed(per thousand) by the time period of Infog
                         ", people during COVID19 are mostly staying at home, and isolating themselves. Nidirect claims, that number of people at a house is not affecting the house leaving rate"), 
                       
                       br(), 
-                      
                       
                       p("You can check the truthness of this statement by choosing gender and chek the resulting scatterplot"), 
                       
@@ -596,6 +597,7 @@ new tests smoothed, new tests smoothed(per thousand) by the time period of Infog
                       
                       br(), 
                ) 
+               )
              ) 
            ),
            
@@ -827,7 +829,7 @@ new tests smoothed, new tests smoothed(per thousand) by the time period of Infog
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-  
+  ############################################
   output$barchart2 <- renderPlot({
     
     
@@ -840,7 +842,7 @@ server <- function(input, output) {
     
   }, width = 850)
   
-  
+  ############################################
   output$barchart1 <- renderPlot({
     covid_updated <- infogears_covid_data[str_detect(infogears_covid_data$leftHomeTimes, pattern=input$left),]
     covid_updated %>%
@@ -850,7 +852,7 @@ server <- function(input, output) {
       labs(title="Number of people with issues", x="Issues", y="Total number of issues", fill="Health issues")
     
   }, width = 850)
-  
+  ############################################
   output$scatterplot1 <- renderPlot({
     
     
@@ -862,6 +864,7 @@ server <- function(input, output) {
       labs(title="Relation of household people number and how many times they left home", x="Number of people living in a house", y="Number of leaving home" , fill="Number of people")
     
   }, width = 850)
+  ############################################
   
   #chosen health condition reactive data
   chosen_gender_data <- reactive({
@@ -870,7 +873,7 @@ server <- function(input, output) {
              Person_Wellness == "Some symptoms", 
              virusTest == c("positive", "negative")) 
   })
-  
+  ############################################
   # fact 1 output
   output$barchart <- renderPlot({
     ggplot(chosen_gender_data(), aes(virusTest, fill = virusTest)) + 
@@ -882,7 +885,7 @@ server <- function(input, output) {
         width = 0.9, 
         alpha = 0.5)
   }, width = 850)
-  
+  ############################################
   output$geo_lefthome <- renderPlot({
     
     Covid_geo_data[complete.cases(Covid_geo_data$faceCovering),] %>%
@@ -899,7 +902,7 @@ server <- function(input, output) {
       scale_fill_discrete(labels = c("Female", "Male", "Not shared", "Other"), name="Gender")
   }, width = 850)
   
-  
+  ############################################
   output$geo_pie <- renderPlot({
     
     
@@ -931,7 +934,7 @@ server <- function(input, output) {
       labs(title="The percentage of Mental Impact category") +
       scale_fill_discrete(name = "Mental Health Impact")
     
-  })
+  }, width = 850)
   
   ############################################
   output$scatterplot <- renderPlot({
@@ -947,7 +950,7 @@ server <- function(input, output) {
            y=paste0("Number range of ", input$timing), 
            title="Scatterplot")+
       theme_minimal()+
-      theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
     
   }, width = 850)
   ############################################
@@ -962,7 +965,8 @@ server <- function(input, output) {
       scale_x_continuous(labels = scales::comma) + coord_cartesian(ylim=c(0,500), xlim=c(0, 500)) +coord_flip() +
       scale_y_continuous(labels = scales::comma)+ 
       labs(title="Relation of total deaths and total cases within a continent", x="Total deaths", y="Total cases")
-  })
+  }, width = 850)
+  ############################################
   output$scatterplot3 <- renderPlot({
     
     
@@ -974,8 +978,8 @@ server <- function(input, output) {
       scale_x_continuous(labels = scales::comma) + coord_cartesian(ylim=c(0,500), xlim=c(0, 500)) +coord_flip() +
       scale_y_continuous(labels = scales::comma)+ 
       labs(title="Relation of total deaths and total cases within a conuntry", x="Total deaths", y="Total cases")
-  })
-  
+  }, width = 850)
+  ############################################
   output$scatterplot4 <- renderPlot({
     
     
@@ -988,9 +992,9 @@ server <- function(input, output) {
       scale_y_continuous(labels = scales::comma)+ 
       labs(title="Relation of total deaths and cardiovascular death rate within a country", x="Total deaths", y="Cardiovasc death rate", fill="")
     
-  })
+  }, width = 850)
   
-  
+  ############################################
   output$scatterplot5 <- renderPlot({
     
     
@@ -1009,7 +1013,8 @@ server <- function(input, output) {
       scale_y_continuous(labels = scales::comma)+  coord_cartesian(xlim=c(0,100000), ylim=c(15, 50)) +
       labs(title="Relation of total deaths and median age within a country", x="Total deaths", y="Cardiovasc death rate", fill="")
     
-  })
+  }, width = 850)
+  ############################################
   output$scatterplot6 <- renderPlot({
     
     
@@ -1028,7 +1033,9 @@ server <- function(input, output) {
       scale_y_continuous(labels = scales::comma)+  coord_cartesian(xlim=c(0,100000), ylim=c(15, 50)) +
       labs(title="Relation of total deaths and median age within a country", x="Total deaths", y="Cardiovasc death rate", fill="")
     
-  })
+  }, width = 850)
+  ############################################
+  
   
   
   
