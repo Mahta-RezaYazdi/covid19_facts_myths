@@ -15,7 +15,8 @@ Top_Regions <- c("California", "Texas","Florida","Pennsylvania","Illinois",
 data_with_cases <- read.csv("owid-covid-data.csv",stringsAsFactors = F)
 data_usa <- data_with_cases%>%
   filter(iso_code=="USA" & complete.cases(iso_code) & date>="2020-04-16" & date<="2020-07-13")
-
+colnames(data_usa)[6:18]<-c("New cases","Total deaths","New deaths","Total cases(per million)", "New cases(per million)", "Total deaths(per million)","New deaths(per million)",      
+                            "Total tests","New tests","Total tests(per thousand)","New tests(per thousand)","New tests smoothed","New tests smoothed(per thousand)")
 
 covid_num <- infogears_covid_data[,sapply(infogears_covid_data, is.numeric)]
 
@@ -393,7 +394,6 @@ new tests smoothed, new tests smoothed(per thousand) by the time period of Infog
                      ) # end of div
               ) # end of column 1
             )
-            
     ), # end of tabPanel
     
     # Data visualization panel
@@ -486,9 +486,14 @@ new tests smoothed, new tests smoothed(per thousand) by the time period of Infog
                column(12, 
                       # title
                       h4("Is the lockdown a barrier or is it a chance to ... "), 
+                      p("According to", 
+                        a(href="https://www.euro.who.int/en/health-topics/health-emergencies/coronavirus-covid-19/technical-guidance/mental-health-and-covid-19", 
+                          "World Health Organization"), 
+                        
+                        ", there is a high chance of getting mental health problems when being sick with COVID19. 
+                        In public mental health terms, the main psychological impact to date is elevated rates of stress or anxiety.",
                       
-                      # fact 1
-                      p("Because of  COVID-19 global pandemic, many of us, even those who have not been infected by the virus, 
+                      "Many of us, even those who have not been infected by the virus, 
                         will choose to quarantine in our homes for the upcoming weeks. According to ",
                         
                         a(href="https://adaa.org/", 
@@ -561,8 +566,8 @@ new tests smoothed, new tests smoothed(per thousand) by the time period of Infog
            fluidRow(
              column(6 ,selectInput(inputId="timing",
                                    label="Select parameter",
-                                   choices=colnames(data_usa)[6:19],
-                                   selected = "total_cases")
+                                   choices= colnames(data_usa)[6:18],
+                                   selected = "New cases")
              )
            ),
            
@@ -572,45 +577,36 @@ new tests smoothed, new tests smoothed(per thousand) by the time period of Infog
            fluidRow(
              div(
                column(12, 
-                      
-                      h4("Did the coronavirus affect on how often people started leaving their homes?"), 
-                      
-                      
-                      p("According to", 
-                        a(href="https://www.nidirect.gov.uk/", 
-                          "nidirect government service"), 
-                        
-                        ", people during COVID19 are mostly staying at home, and isolating themselves. Nidirect claims, that number of people at a house is not affecting the house leaving rate"), 
-                      
-                      br(), 
-                      
-                      
-                      p("You can check the truthness of this statement by choosing gender and chek the resulting scatterplot"), 
-                      
-                      br(), 
-                      
-                      br(), 
-                      
-                      
-                      p("X-axis shows how many people are living at the home and Y-axis shows how many times they left their homes during COVID 19."), 
-                      
-                      br(), 
-               ) 
+                      div(
+                        #title
+                        h3("Did the coronavirus affect on how often people started leaving their homes?"), 
+                        p("According to", 
+                          a(href="https://www.nidirect.gov.uk/", 
+                            "nidirect government service"), 
+                          ", people during COVID19 are mostly staying at home, and isolating themselves. Nidirect claims, that number of household members is not affecting the house leaving rate."), 
+                        br(), 
+                        p("You can check the truthness of this statement by choosing gender and chek the resulting scatterplot"), 
+                        br(),
+                        p("X-axis shows the number of household members and Y-axis shows how many times they left their homes during COVID19."), 
+                        br(), 
+                      ) 
+               )
              ) 
            ),
            
            
-           selectInput(inputId ="gender", label="Choose a gender",
-                       choices = unique(infogears_covid_data$gender),
-                       selected = "male"),
+           selectInput(inputId ="gender1", label="Choose a gender",
+                       choices = list("Female" = "female", 
+                                      "Male" = "male", 
+                                      "Other" = "other"), 
+                       selected = "female"),
+           
            
            
            
            plotOutput("scatterplot1"),
            
-           
-           
-           #####################3
+           #####################
            fluidRow(
              div(
                column(12, 
@@ -642,48 +638,11 @@ new tests smoothed, new tests smoothed(per thousand) by the time period of Infog
                ) 
              ) 
            ), 
-           
-           
            selectInput(inputId ="left", label="Choose how many times a peron leaves home",
                        choices = unique(infogears_covid_data$leftHomeTimes),
                        selected = "didNotLeft"),
            
-           plotOutput("barchart1"),
-           
-           ###################################
-           fluidRow(
-             div(
-               column(12, 
-                      # Does physical health condition affect the level of vulnerability to COVID19
-                      
-                      # title
-                      h4("Does COVID19 affects mental health?"), 
-                      
-                      # fact 1
-                      p("According to", 
-                        a(href="https://www.euro.who.int/en/health-topics/health-emergencies/coronavirus-covid-19/technical-guidance/mental-health-and-covid-19", 
-                          "World Health Organization"), 
-                        
-                        ", there is a high chance of getting mental health problems when being sick with COVID19. In public mental health terms, the main psychological impact to date is elevated rates of stress or anxiety. But as new measures and impacts are introduced – especially quarantine and its effects on many people’s usual activities, routines or livelihoods – levels of loneliness, depression, harmful alcohol and drug use, and self-harm or suicidal behaviour are also expected to rise."), 
-                      
-                      p("You can check the truthness of this statement by choosing thealth issue and chek the resulting barchart."), 
-                      
-                      
-                      p("In the X axis of the graph is located health status and Y axis showing total impact on poeples mental health caused by covid19."),
-                      
-                      
-                      
-               )
-             ) 
-           ),
-           
-           selectInput(inputId ="issue", label="Choose a health status",
-                       choices = unique(infogears_covid_data$healthIssues),
-                       selected = "noIssues"),
-           
-           
-           
-           plotOutput("barchart2")
+           plotOutput("barchart1")
              
     ), 
     tabPanel("COVID-19 Global Data Visualization",
@@ -713,15 +672,13 @@ new tests smoothed, new tests smoothed(per thousand) by the time period of Infog
           ) 
         ) 
       ),
-      
-      
-      
-      selectInput(inputId = "forth", label="Choose the continent",
+      fluidRow(
+      column(5, selectInput(inputId = "forth", label="Choose the continent",
                   choices = c('Asia', 'Europe', 'Africa', 'North America', 'South America', 'Oceania'),
-                  selected = "Asia"),
-      selectInput(inputId ="first", label="Choose the country",
+                  selected = "Asia")),
+      column(5, selectInput(inputId ="first", label="Choose the country",
                   choices = unique(data_with_cases$location),
-                  selected = "Afghanistan"),
+                  selected = "Afghanistan"))),
       
       
       plotOutput("scatterplot2"),
@@ -741,15 +698,12 @@ new tests smoothed, new tests smoothed(per thousand) by the time period of Infog
                    
                    ", there is a strongly positive relation of coronavirus and cardiovascular disease. They state, that people with cardiovascular disease are within the death zone, and people coronavirus can gain cardiovascular diseases."), 
                  
-                 
                  br(), 
                  
                  p("You can check the truthiness of the statement by choosing the continent and check the resulting scatterplot."), 
                  
-                 
                  br(), 
                  p("The scatterplot shows the relation of the total death rate from COVID19 and the death rate from cardiovascular deseases within each continent or country. The line in a scatterplot is the mean line."), 
-                 
                  
                  br(),
           ) 
@@ -780,45 +734,30 @@ new tests smoothed, new tests smoothed(per thousand) by the time period of Infog
                    
                    ", mean age of coronavirus death is 40 in the world. "), 
                  
-                 
                  br(), 
                  
                  p("You can check the truthiness of the statement by choosing the region or the exact country and check the resulting scatterplot."), 
                  
-                 
                  br(), 
                  p("The scatterplot shows the relation of the total death rate and the median age within each continent or country. The line in each scatterplot is the mean line."), 
-                 
                  
                  br(),
           ) 
         ) 
       ),
-      
-      
-      selectInput(inputId ="fifth", label="Choose a continent",
+      fluidRow(
+      column(4,selectInput(inputId ="fifth", label="Choose a continent",
                   choices = unique(data_with_cases$continent),
-                  selected = "Asia"),
+                  selected = "Asia")),
       
-      selectInput(inputId ="sixth", label="Choose a country",
+      column(4,selectInput(inputId ="sixth", label="Choose a country",
                   choices = unique(data_with_cases$location),
-                  selected = "Armenia"),
-      
-      
-      
-      
-      
+                  selected = "Armenia"))
+      ),
       plotOutput("scatterplot5"),
       plotOutput("scatterplot6"),
-      
-      
-      
-      
     ) # end of tabPanel
-    
-    
     # end of data visualization panel
-    
   ) # end of tabsetPanel
 ) # end of fluid page
 
@@ -854,13 +793,12 @@ server <- function(input, output) {
   output$scatterplot1 <- renderPlot({
     
     
-    covid_g <- infogears_covid_data[str_detect(infogears_covid_data$gender, pattern=input$gender),]
+    covid_g <- infogears_covid_data[str_detect(infogears_covid_data$gender, pattern=input$gender1),]
     covid_g %>%
       group_by(leftHomeTimes, householdHeadcount) %>%
       summarise(Count=n()) %>%
       ggplot(aes(x=householdHeadcount, y=Count, fill=householdHeadcount)) + geom_point(stat="identity" )+ geom_smooth(method="lm", se=F) +
-      labs(title="Relation of household people number and how many times they left home", x="Number of people living in a house", y="Number of leaving home" , fill="Number of people")
-    
+      labs(title="Relation between household members and amount of leaving home", x="Number of household members", y="Number of leaving home" , fill="Household members")
   }, width = 850)
   
   #chosen health condition reactive data
@@ -931,14 +869,14 @@ server <- function(input, output) {
       labs(title="The percentage of Mental Impact category") +
       scale_fill_discrete(name = "Mental Health Impact")
     
-  })
+  }, width = 850)
   
   ############################################
   output$scatterplot <- renderPlot({
     data_usa%>%
       select(date,input$timing)%>%
       filter(complete.cases(date) & complete.cases(input$timing))%>%
-      ggplot(aes_string( y=input$timing)) + 
+      ggplot(aes(y = data_usa[,input$timing])) + 
       geom_point(aes(x=date),color='darkblue') +
       geom_smooth(aes(x=date),method="loess", se=F) +
       scale_x_discrete(breaks = function(x) x[seq(1, length(x), by = 4)])+
@@ -947,7 +885,7 @@ server <- function(input, output) {
            y=paste0("Number range of ", input$timing), 
            title="Scatterplot")+
       theme_minimal()+
-      theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
+      theme(axis.text.x = element_text(angle = 90, vjust = 0.5))
     
   }, width = 850)
   ############################################
@@ -962,7 +900,7 @@ server <- function(input, output) {
       scale_x_continuous(labels = scales::comma) + coord_cartesian(ylim=c(0,500), xlim=c(0, 500)) +coord_flip() +
       scale_y_continuous(labels = scales::comma)+ 
       labs(title="Relation of total deaths and total cases within a continent", x="Total deaths", y="Total cases")
-  })
+  }, width = 850)
   output$scatterplot3 <- renderPlot({
     
     
@@ -974,7 +912,7 @@ server <- function(input, output) {
       scale_x_continuous(labels = scales::comma) + coord_cartesian(ylim=c(0,500), xlim=c(0, 500)) +coord_flip() +
       scale_y_continuous(labels = scales::comma)+ 
       labs(title="Relation of total deaths and total cases within a conuntry", x="Total deaths", y="Total cases")
-  })
+  }, width = 850)
   
   output$scatterplot4 <- renderPlot({
     
@@ -988,7 +926,7 @@ server <- function(input, output) {
       scale_y_continuous(labels = scales::comma)+ 
       labs(title="Relation of total deaths and cardiovascular death rate within a country", x="Total deaths", y="Cardiovasc death rate", fill="")
     
-  })
+  }, width = 850)
   
   
   output$scatterplot5 <- renderPlot({
@@ -1009,7 +947,7 @@ server <- function(input, output) {
       scale_y_continuous(labels = scales::comma)+  coord_cartesian(xlim=c(0,100000), ylim=c(15, 50)) +
       labs(title="Relation of total deaths and median age within a country", x="Total deaths", y="Cardiovasc death rate", fill="")
     
-  })
+  }, width = 850)
   output$scatterplot6 <- renderPlot({
     
     
@@ -1028,11 +966,7 @@ server <- function(input, output) {
       scale_y_continuous(labels = scales::comma)+  coord_cartesian(xlim=c(0,100000), ylim=c(15, 50)) +
       labs(title="Relation of total deaths and median age within a country", x="Total deaths", y="Cardiovasc death rate", fill="")
     
-  })
-  
-  
-  
-  
+  }, width = 850)
 }
 
 # Run the application 
