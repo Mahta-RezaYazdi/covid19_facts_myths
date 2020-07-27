@@ -64,4 +64,36 @@ newData <- newData %>%
 
 newData <- c(newData, GeoLocations)
 
+
 write.csv(newData, "Country_Region.csv")
+
+newData <- read.csv("Country_Region.csv")
+
+newData <- newData %>%
+  mutate(faceCovering = ifelse(faceCovering == "Always", faceCovering,
+                          ifelse(faceCovering == "Sometimes", faceCovering,
+                                 ifelse(faceCovering == "Never", faceCovering, NA))),
+         leftHomeTimes = ifelse(leftHomeTimes == "didNotLeave", "Didn't leave",
+                                ifelse(leftHomeTimes == "oneTime", "Left Once",
+                                       ifelse(leftHomeTimes == "twoTimesOrMore", "Left Twice/More", leftHomeTimes ))),
+         mentalHealthImpact = ifelse(mentalHealthImpact == "significantImpact", "Significant Impact",
+                                     ifelse(mentalHealthImpact == "someImpact", "Some Impact",
+                                            ifelse(mentalHealthImpact == "noImpact", "No Impact", mentalHealthImpact ))))
+
+
+
+newData <- newData[complete.cases(newData$region_name),]
+
+
+write.csv(newData, "Country_Region.csv")
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
