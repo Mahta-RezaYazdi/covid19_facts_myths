@@ -2,6 +2,8 @@ library(shiny)
 library(ggplot2)
 library(dplyr)
 library(stringr)
+library(tm)
+library(tidyr)
 
 #reading datasets
 infogears_covid_data <- read.csv("Covid_data.csv")
@@ -10,12 +12,16 @@ Covid_geo_data <- read.csv("Country_Region.csv")
 Top_Regions <- c("California", "Texas","Florida","Pennsylvania","Illinois",
                  "Ohio","New Jersey","Arizona","Michigan","Washington","Georgia")
 
-data_with_cases <- read.csv("owid-covid-data.csv")
+data_with_cases <- read.csv("owid-covid-data.csv",stringsAsFactors = F)
 data_usa <- data_with_cases%>%
   filter(iso_code=="USA" & complete.cases(iso_code) & date>="2020-04-16" & date<="2020-07-13")
 
 
 covid_num <- infogears_covid_data[,sapply(infogears_covid_data, is.numeric)]
+
+data_with_cases_num <- data_with_cases[,sapply(data_with_cases, is.numeric)]
+
+
 
 
 # Define UI for application that draws a histogram
@@ -391,7 +397,7 @@ new tests smoothed, new tests smoothed(per thousand) by the time period of Infog
     ), # end of tabPanel
     
     # Data visualization panel
-    tabPanel("COVID19 Data Visualisation", 
+    tabPanel("COVID19 USA Data Visualisation", 
              
              # Fact 1 description
              fluidRow(
@@ -424,7 +430,7 @@ new tests smoothed, new tests smoothed(per thousand) by the time period of Infog
                   ) # end of column
                ) # end of div
              ), # end of fluid row fact 1 description
-             
+    
             radioButtons(inputId = "gender", 
                          label = h5("Choose a gender"),
                          choices = list("Female" = "female", 
@@ -679,7 +685,140 @@ new tests smoothed, new tests smoothed(per thousand) by the time period of Infog
            
            plotOutput("barchart2")
              
-    ) # end of data visualization panel
+    ), 
+    tabPanel("COVID-19 Global Data Visualization",
+      fluidRow(
+        div(
+          column(12, 
+                 
+                 h4("Does geographical location affect the rate of deaths from COVID19?"), 
+                 
+                 p("Since first being recorded late last year in China, the Covid-19 coronavirus has spread around the world, and been declared a pandemic by the World Health Organization. However, differences in testing mean that the number of cases may be understated for some countries. According to", 
+                   a(href="https://www.theguardian.com/world/2020/jul/26/coronavirus-world-map-which-countries-have-the-most-covid-19-cases-and-deaths", 
+                     "Support the Guardian"), 
+                   
+                   ", US has the most deaths, which drastically differs from the rates of other countries."), 
+                 
+                 
+                 br(), 
+                 
+                 p("You can check the truthiness of the statement by choosing the region or the exact country and check the resulting scatterplot."), 
+                 
+                 
+                 br(), 
+                 p("The scatterplot shows the relation of the total deaths from COVID19 and total cases of COVID19 within each continent or country"), 
+                 
+                 
+                 br(), 
+          ) 
+        ) 
+      ),
+      
+      
+      
+      selectInput(inputId = "forth", label="Choose the continent",
+                  choices = c('Asia', 'Europe', 'Africa', 'North America', 'South America', 'Oceania'),
+                  selected = "Asia"),
+      selectInput(inputId ="first", label="Choose the country",
+                  choices = unique(data_with_cases$location),
+                  selected = "Afghanistan"),
+      
+      
+      plotOutput("scatterplot2"),
+      
+      plotOutput("scatterplot3"),
+      
+      ###################################
+      fluidRow(
+        div(
+          column(12, 
+                 
+                 h4("The relationship between COVID19 and cardiovascular desease"), 
+                 
+                 p("Cardiovascular disease (CVD) is a general term for conditions affecting the heart or blood vessels. According to", 
+                   a(href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7138145/", 
+                     "US National Library of Medicine-National Institutes of Health"), 
+                   
+                   ", there is a strongly positive relation of coronavirus and cardiovascular disease. They state, that people with cardiovascular disease are within the death zone, and people coronavirus can gain cardiovascular diseases."), 
+                 
+                 
+                 br(), 
+                 
+                 p("You can check the truthiness of the statement by choosing the continent and check the resulting scatterplot."), 
+                 
+                 
+                 br(), 
+                 p("The scatterplot shows the relation of the total death rate from COVID19 and the death rate from cardiovascular deseases within each continent or country. The line in a scatterplot is the mean line."), 
+                 
+                 
+                 br(),
+          ) 
+        ) 
+      ),
+      
+      
+      
+      selectInput(inputId ="select", label="Choose the continent",
+                  choices = unique(data_with_cases$continent),
+                  selected = "Asia"),
+      
+      
+      
+      plotOutput("scatterplot4"),
+      
+      ##################################
+      fluidRow(
+        div(
+          column(12, 
+                 
+                 h4("Does death rate from COVID19 differs from age to age?"), 
+                 
+                 p("There is a straightforward question that most people would like answered. If someone is infected with COVID-19, how likely is that person to die? 
+                             According to", 
+                   a(href="https://ourworldindata.org/grapher/case-fatality-rate-of-covid-19-vs-median-age?country=COL~SYC", 
+                     "University of Oxford"), 
+                   
+                   ", mean age of coronavirus death is 40 in the world. "), 
+                 
+                 
+                 br(), 
+                 
+                 p("You can check the truthiness of the statement by choosing the region or the exact country and check the resulting scatterplot."), 
+                 
+                 
+                 br(), 
+                 p("The scatterplot shows the relation of the total death rate and the median age within each continent or country. The line in each scatterplot is the mean line."), 
+                 
+                 
+                 br(),
+          ) 
+        ) 
+      ),
+      
+      
+      selectInput(inputId ="fifth", label="Choose a continent",
+                  choices = unique(data_with_cases$continent),
+                  selected = "Asia"),
+      
+      selectInput(inputId ="sixth", label="Choose a country",
+                  choices = unique(data_with_cases$location),
+                  selected = "Armenia"),
+      
+      
+      
+      
+      
+      plotOutput("scatterplot5"),
+      plotOutput("scatterplot6"),
+      
+      
+      
+      
+    ) # end of tabPanel
+    
+    
+    # end of data visualization panel
+    
   ) # end of tabsetPanel
 ) # end of fluid page
 
@@ -812,6 +951,88 @@ server <- function(input, output) {
     
   }, width = 850)
   ############################################
+  output$scatterplot2 <- renderPlot({
+    
+    
+    covid_forth <- data_with_cases[str_detect(data_with_cases$continent, pattern=input$forth),]
+    covid_forth %>% drop_na()
+    
+    
+    ggplot(covid_forth, aes(x=total_deaths, y = total_cases)) + geom_point(color="blue")+ 
+      scale_x_continuous(labels = scales::comma) + coord_cartesian(ylim=c(0,500), xlim=c(0, 500)) +coord_flip() +
+      scale_y_continuous(labels = scales::comma)+ 
+      labs(title="Relation of total deaths and total cases within a continent", x="Total deaths", y="Total cases")
+  })
+  output$scatterplot3 <- renderPlot({
+    
+    
+    covid_first <- data_with_cases[str_detect(data_with_cases$location, pattern=input$first),]
+    covid_first %>% drop_na()
+    
+    
+    ggplot(covid_first, aes(x=total_deaths, y = total_cases)) + geom_point(color="red")+ 
+      scale_x_continuous(labels = scales::comma) + coord_cartesian(ylim=c(0,500), xlim=c(0, 500)) +coord_flip() +
+      scale_y_continuous(labels = scales::comma)+ 
+      labs(title="Relation of total deaths and total cases within a conuntry", x="Total deaths", y="Total cases")
+  })
+  
+  output$scatterplot4 <- renderPlot({
+    
+    
+    covid_first <- data_with_cases[str_detect(data_with_cases$continent, pattern=input$select),]
+    covid_first %>% drop_na()
+    
+    
+    ggplot(covid_first, aes(x=total_deaths, y = cardiovasc_death_rate, fill="total_deaths")) + geom_point()+ geom_smooth(method="lm", se=F)+
+      scale_x_continuous(labels = scales::comma)  +
+      scale_y_continuous(labels = scales::comma)+ 
+      labs(title="Relation of total deaths and cardiovascular death rate within a country", x="Total deaths", y="Cardiovasc death rate", fill="")
+    
+  })
+  
+  
+  output$scatterplot5 <- renderPlot({
+    
+    
+    covid_first <- data_with_cases[!str_detect(data_with_cases$continent, pattern=input$fifth),]
+    covid_first %>% drop_na()
+    
+    covid_first$date<-str_replace_all(covid_first$date, pattern="^[0-9]{2}", replacement = "")
+    covid_first$date<-str_replace_all(covid_first$date, pattern="\\-", replacement = "")
+    covid_first$date<-str_replace_all(covid_first$date, pattern="^[0-9]{2}", replacement = "")
+    
+    covid_first %>%
+      group_by(input$fifth, median_age) %>%
+      summarise(Count=sum(total_deaths)) %>%
+      ggplot(aes(x=Count, y = median_age, fill="median_age")) + geom_point(stat="identity")+geom_smooth(method="lm", se=F)+
+      scale_x_continuous(labels = scales::comma)  +
+      scale_y_continuous(labels = scales::comma)+  coord_cartesian(xlim=c(0,100000), ylim=c(15, 50)) +
+      labs(title="Relation of total deaths and median age within a country", x="Total deaths", y="Cardiovasc death rate", fill="")
+    
+  })
+  output$scatterplot6 <- renderPlot({
+    
+    
+    covid_first1 <- data_with_cases[!str_detect(data_with_cases$location, pattern=input$sixth),]
+    covid_first1 %>% drop_na()
+    
+    covid_first1$date<-str_replace_all(covid_first1$date, pattern="^[0-9]{2}", replacement = "")
+    covid_first1$date<-str_replace_all(covid_first1$date, pattern="\\-", replacement = "")
+    covid_first1$date<-str_replace_all(covid_first1$date, pattern="^[0-9]{2}", replacement = "")
+    
+    covid_first1 %>%
+      group_by(input$sixth, median_age) %>%
+      summarise(Count=sum(total_deaths)) %>%
+      ggplot(aes(x=Count, y = median_age, fill="median_age")) + geom_point(stat="identity")+geom_smooth(method="lm", se=F)+
+      scale_x_continuous(labels = scales::comma)  +
+      scale_y_continuous(labels = scales::comma)+  coord_cartesian(xlim=c(0,100000), ylim=c(15, 50)) +
+      labs(title="Relation of total deaths and median age within a country", x="Total deaths", y="Cardiovasc death rate", fill="")
+    
+  })
+  
+  
+  
+  
 }
 
 # Run the application 
