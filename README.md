@@ -1,4 +1,5 @@
-## Project authors: 
+![alt text](https://github.com/Mahta-RezaYazdi/covid19_facts_myths/blob/master/www/logo.png =150x150)
+## Project authors are: 
 * Ani Jeyranyan 
 * Julieta Aghakaryan
 * Liana Poghosyan
@@ -11,5 +12,4 @@ The platform aims to provide information through easy to understand visuals. Map
 
 To compare, we made use of [the link](https://github.com/owid/covid-19-data/tree/master/public/data), to have the statistics about world also.
 
-![alt text](https://github.com/Mahta-RezaYazdi/covid19_facts_myths/blob/master/www/logo.png "")
 
